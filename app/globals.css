@@ -24,3 +24,22 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 20%,
+    black 80%,
+    transparent
+  );
+
+  mask-image: linear-gradient(
+    to left,
+    transparent,
+    black 20%,
+    black 80%,
+    transparent
+  );
+}
+
