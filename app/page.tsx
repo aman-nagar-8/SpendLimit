@@ -1,11 +1,12 @@
 "use client";
-import React, { useMemo, useState, useRef } from "react";
+import React, { useMemo, useState } from "react";
 import Hyperspeed from "@/components/Hyperspeed";
 import { hyperspeedPresets } from "@/components/HyperSpeedPresets";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
-import { StyledWrapper } from "@/components/Buttoncss";
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   const [presetCount, setPresetCount] = useState("one");
@@ -13,7 +14,13 @@ export default function Home() {
   // By defining the type here, TypeScript automatically knows all the arrays below are strict tuples!
   const hyperspeedOptions: React.ComponentProps<
     typeof Hyperspeed
-  >["effectOptions"] = useMemo(() => hyperspeedPresets.four, [safeKey]);
+  >["effectOptions"] = useMemo(
+    () =>
+      hyperspeedPresets.four as unknown as React.ComponentProps<
+        typeof Hyperspeed
+      >["effectOptions"],
+    [safeKey],
+  );
 
   const companyArray = [
     { name: "ChatGPT", img: "/chatgpt.png" },
@@ -29,35 +36,8 @@ export default function Home() {
         <Hyperspeed effectOptions={hyperspeedOptions} />
       </div>
       <div className="relative z-10 flex flex-col  w-full h-full ">
-        <nav className="flex items-center justify-between py-6 px-15 text-sm text-gray-400 ">
-          {/* left */}
-          <div className="font-bold text-white text-base cursor-pointer">
-            <div className="flex items-center">
-              <div className="relative w-10 h-10 flex items-center justify-center bg-white/75 rounded-full mr-3">
-                <Image
-                  src="/profile.png"
-                  alt="P"
-                  fill
-                  className=" rounded-full"
-                />
-              </div>
-              A N
-            </div>
-          </div>
-          {/* center */}
-          <div className="flex space-x-12 items-center ">
-            <div className="hover:text-white cursor-pointer">About</div>
-            <div className="hover:text-white cursor-pointer">Features</div>
-            <div className="hover:text-white cursor-pointer">Learn</div>
-          </div>
-          {/* right */}
-          <StyledWrapper>
-            <button className="btn">
-              <span className="btn-text-one">Contact Us</span>
-              <span className="btn-text-two">Let's Talk</span>
-            </button>
-          </StyledWrapper>
-        </nav>
+        {/* Navbar */}
+        <Navbar />
 
         {/* Your Heading */}
         <main className="flex items-center justify-center flex-1 ">
@@ -84,9 +64,9 @@ export default function Home() {
                 className="text-xl text-gray-400"
               />
             </p>
-            <button className="mt-8 px-10 py-3  bg-white text-black rounded-xl font-mono cursor-pointer">
+            <Link href="/audit" className="mt-8 px-10 py-3  bg-white text-black rounded-xl font-mono cursor-pointer">
               Track Now
-            </button>
+            </Link >
             <div className="relative flex h-22 w-180 mt-25 justify-center marquee-mask ">
               <Marquee
                 speed={40}
@@ -111,11 +91,6 @@ export default function Home() {
                   </div>
                 ))}
               </Marquee>
-              {/* Left Fade */}
-              {/* <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-linear-to-r from-black via-black/90 to-transparent" /> */}
-
-              {/* Right Fade */}
-              {/* <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-linear-to-l from-black via-black/90 to-transparent" />  */}
             </div>
           </div>
         </main>

@@ -25,6 +25,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+ /* scroll animation of AI tools on homepage right and left side fade effect */
 .marquee-mask {
   -webkit-mask-image: linear-gradient(
     to right,
@@ -41,5 +42,59 @@ body {
     black 80%,
     transparent
   );
+}
+
+
+/* =========================================
+   WebKit Browsers (Chrome, Safari, Edge)
+   ========================================= */
+
+/* Total width and height of the scrollbar */
+::-webkit-scrollbar {
+  width: 10px;  /* Vertical scrollbar width */
+  height: 10px; /* Horizontal scrollbar height */
+}
+
+/* The track (background) of the scrollbar */
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* A very dark grey to make the black thumb pop */
+  border-radius: 8px;  
+}
+
+/* The draggable scrolling thumb */
+::-webkit-scrollbar-thumb {
+  background: #000000; /* Solid black */
+  border-radius: 8px;
+  border: 2px solid #1a1a1a; /* Matches track background to create a "floating" padded effect */
+}
+
+/* Hover state for the thumb */
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a2a; /* Slightly lighter on hover for better UX */
+}
+
+/* =========================================
+   Firefox Support
+   ========================================= */
+
+/* Target the root or specific scrolling containers */
+* {
+  scrollbar-width: thin; /* Makes the scrollbar less bulky */
+  scrollbar-color: #000000 #1a1a1a; /* thumb color | track color */
+}
+
+
+/* Increment counter in Number Input Field */
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
