@@ -1,0 +1,75 @@
+monthlySavings
+annualSavings
+score
+currentSpend
+summary
+  const tools = [
+    {
+      tool: "Cursor Business",
+      spend: 400,
+      savings: 120,
+      action: "Reduce seats from 10 → 7",
+      reason: "3 seats appear underutilized compared with team size.",
+    },
+    {
+      tool: "ChatGPT Team",
+      spend: 375,
+      savings: 240,
+      action: "Consolidate research workflows",
+      reason: "Significant overlap detected with Claude usage.",
+    },
+    {
+      tool: "Claude Team",
+      spend: 180,
+      savings: 280,
+      action: "Downgrade unused seats",
+      reason: "Multiple seats show low estimated utilization.",
+    },
+  ];
+    const recommendations = [
+    {
+      title: "Remove unused Cursor licenses",
+      savings: 120,
+    },
+    {
+      title: "Consolidate research workflows",
+      savings: 240,
+    },
+    {
+      title: "Downgrade inactive Claude seats",
+      savings: 280,
+    },
+  ];
+    const chartData = [
+    {
+      label: "Your Team",
+      value: 72,
+      color: "bg-blue-500",
+    },
+    {
+      label: "Industry Avg",
+      value: 43,
+      color: "bg-zinc-600",
+    },
+  ];
+  audit.id
+  audit.views
+  audit.shares
+  audit.tools
+
+
+  input -
+  tools,
+  plans,
+  useCase,
+  monthlySpending,
+  numberOfSeats,
+  teamSize
+
+    for (const tool of tools) {
+    const {
+      tool: toolName,
+      plan,
+      monthlySpend,
+      seats
+    } = tool;

@@ -1,11 +1,11 @@
-"use client"
-import React from 'react'
-import {Info} from "@/components/shareAudit/Info"
-import { StatCard } from '@/components/shareAudit/StateCard'
-import { Metric } from '@/components/shareAudit/Metric'
-import Navbar from '@/components/Navbar'
+"use client";
+import React from "react";
+import { Info } from "@/components/shareAudit/Info";
+import { StatCard } from "@/components/shareAudit/StateCard";
+import { Metric } from "@/components/shareAudit/Metric";
+import Navbar from "@/components/Navbar";
 
- function page() {
+function page() {
   const audit = {
     id: "7f9k3m",
     currentSpend: 1420,
@@ -19,7 +19,7 @@ import Navbar from '@/components/Navbar'
 
   return (
     <div className="min-h-screen bg-black">
-        <Navbar/>
+      <Navbar />
       <div className="mx-auto max-w-7xl px-6 py-4">
         <HeroSection audit={audit} />
         <ActionBar auditId={audit.id} />
@@ -27,8 +27,15 @@ import Navbar from '@/components/Navbar'
         <SavingsSnapshot audit={audit} />
         <ToolBreakdown />
         <Recommendations />
-        <BenchmarkCard />
-        <TrustSection audit={audit} />
+        <div className="flex w-full gap-5">
+          <div className="flex-1">
+            <BenchmarkCard />
+          </div>
+
+          <div className="flex-1">
+            <TrustSection audit={audit} />
+          </div>
+        </div>
         <ShareSection auditId={audit.id} />
         <CredexCTA savings={audit.monthlySavings} />
         <RunAuditCTA />
@@ -38,18 +45,14 @@ import Navbar from '@/components/Navbar'
 }
 
 function ActionBar({ auditId }: any) {
-  const shareUrl =
-    `${process.env.URL}/${auditId}`;
+  const shareUrl = `${process.env.URL}/${auditId}`;
 
-  const copyLink =  async () => {
-    await navigator.clipboard.writeText(
-      shareUrl,
-    );
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(shareUrl);
   };
 
   return (
     <div className="mt-6 flex flex-wrap gap-3">
-
       <button
         onClick={copyLink}
         className="
@@ -83,7 +86,6 @@ function ActionBar({ auditId }: any) {
       >
         Download PDF
       </button>
-
     </div>
   );
 }
@@ -100,13 +102,10 @@ function RunAuditCTA() {
       text-center
     "
     >
-      <h2 className="text-4xl font-bold text-white">
-        Run Your Own AI Audit
-      </h2>
+      <h2 className="text-4xl font-bold text-white">Run Your Own AI Audit</h2>
 
       <p className="mt-4 text-zinc-400">
-        Discover savings opportunities
-        in under 2 minutes.
+        Discover savings opportunities in under 2 minutes.
       </p>
 
       <button
@@ -144,25 +143,15 @@ function HeroSection({ audit }: any) {
 
         <h1 className="mt-4 text-6xl font-bold text-white">
           ${audit.monthlySavings}
-          <span className="text-zinc-500 text-3xl">
-            /month
-          </span>
+          <span className="text-zinc-500 text-3xl">/month</span>
         </h1>
 
-        <p className="mt-2 text-zinc-400">
-          Potential Savings Identified
-        </p>
+        <p className="mt-2 text-zinc-400">Potential Savings Identified</p>
 
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <StatCard
-            label="Annual Savings"
-            value={`$${audit.annualSavings}`}
-          />
+          <StatCard label="Annual Savings" value={`$${audit.annualSavings}`} />
 
-          <StatCard
-            label="Efficiency Score"
-            value={`${audit.score}/100`}
-          />
+          <StatCard label="Efficiency Score" value={`${audit.score}/100`} />
 
           <StatCard
             label="Current Spend / Month"
@@ -173,9 +162,7 @@ function HeroSection({ audit }: any) {
     </div>
   );
 }
-function SavingsSnapshot({
-  audit,
-}: any) {
+function SavingsSnapshot({ audit }: any) {
   return (
     <div
       className="
@@ -186,45 +173,26 @@ function SavingsSnapshot({
       p-8
     "
     >
-      <h2 className="text-xl font-semibold text-white">
-        Savings Snapshot
-      </h2>
+      <h2 className="text-xl font-semibold text-white">Savings Snapshot</h2>
 
       <div className="mt-6 grid gap-6 md:grid-cols-4">
-
-        <Metric
-          label="Current Spend"
-          value={`$${audit.currentSpend}`}
-        />
+        <Metric label="Current Spend" value={`$${audit.currentSpend}`} />
 
         <Metric
           label="Recommended Spend"
-          value={`$${
-            audit.currentSpend -
-            audit.monthlySavings
-          }`}
+          value={`$${audit.currentSpend - audit.monthlySavings}`}
         />
 
-        <Metric
-          label="Monthly Savings"
-          value={`$${audit.monthlySavings}`}
-        />
+        <Metric label="Monthly Savings" value={`$${audit.monthlySavings}`} />
 
-        <Metric
-          label="Annual Savings"
-          value={`$${audit.annualSavings}`}
-        />
-
+        <Metric label="Annual Savings" value={`$${audit.annualSavings}`} />
       </div>
     </div>
   );
 }
 
-function ShareSection({
-  auditId,
-}: any) {
-  const url =
-    `${process.env.URL}/audit/${auditId}`;
+function ShareSection({ auditId }: any) {
+  const url = `${process.env.URL}/audit/${auditId}`;
 
   return (
     <div
@@ -236,21 +204,14 @@ function ShareSection({
       p-8
     "
     >
-      <h2 className="text-white text-xl font-semibold">
-        Share This Audit
-      </h2>
+      <h2 className="text-white text-xl font-semibold">Share This Audit</h2>
 
       <p className="mt-2 text-zinc-400">
-        Help other teams discover AI
-        savings opportunities.
+        Help other teams discover AI savings opportunities.
       </p>
 
       <div className="mt-6 flex flex-wrap gap-3">
-
-        <a
-          href={`https://twitter.com/intent/tweet?text=`}
-          target="_blank"
-        >
+        <a href={`https://twitter.com/intent/tweet?text=`} target="_blank">
           <button className="rounded-xl bg-zinc-900 px-5 py-3 text-white">
             Share on X
           </button>
@@ -266,9 +227,7 @@ function ShareSection({
         </a>
 
         <button
-          onClick={() =>
-            navigator.clipboard.writeText(url)
-          }
+          onClick={() => navigator.clipboard.writeText(url)}
           className="
           rounded-xl
           bg-red-600
@@ -278,16 +237,12 @@ function ShareSection({
         >
           Copy Link
         </button>
-
       </div>
     </div>
   );
 }
 
-
-function TrustSection({
-  audit,
-}: any) {
+function TrustSection({ audit }: any) {
   return (
     <div
       className="
@@ -298,42 +253,22 @@ function TrustSection({
       p-8
     "
     >
-      <h2 className="text-white text-xl font-semibold">
-        Audit Metadata
-      </h2>
+      <h2 className="text-white text-xl font-semibold">Audit Metadata</h2>
 
       <div className="mt-6 grid md:grid-cols-2 gap-4">
+        <Info label="Audit ID" value={audit.id} />
 
-        <Info
-          label="Audit ID"
-          value={audit.id}
-        />
+        <Info label="Views" value={audit.views} />
 
-        <Info
-          label="Views"
-          value={audit.views}
-        />
+        <Info label="Shares" value={audit.shares} />
 
-        <Info
-          label="Shares"
-          value={audit.shares}
-        />
-
-        <Info
-          label="Tools Audited"
-          value={audit.tools.join(", ")}
-        />
-
+        <Info label="Tools Audited" value={audit.tools.join(", ")} />
       </div>
     </div>
   );
 }
 
-function CredexCTA({
-  savings,
-}: {
-  savings: number;
-}) {
+function CredexCTA({ savings }: { savings: number }) {
   if (savings < 500) return null;
 
   return (
@@ -347,14 +282,12 @@ function CredexCTA({
     "
     >
       <h2 className="text-3xl font-bold text-white">
-        You're leaving ${savings}/month
-        on the table.
+        You're leaving ${savings}/month on the table.
       </h2>
 
       <p className="mt-3 text-zinc-300">
-        Credex continuously monitors
-        AI spending and identifies
-        new optimization opportunities.
+        Credex continuously monitors AI spending and identifies new optimization
+        opportunities.
       </p>
 
       <button
@@ -383,32 +316,17 @@ function SummaryCard() {
         p-8
       "
     >
-      <h2 className="text-xl font-semibold text-white">
-        Personalized Summary
-      </h2>
+      <h2 className="text-xl font-semibold text-white">Personalized Summary</h2>
 
       <p className="mt-4 leading-8 text-zinc-300">
         Your team currently spends
-        <span className="font-medium text-white">
-          {" "} $1,420/month{" "}
-        </span>
-        across AI tooling.
-
-        Most of your spend is concentrated in
-        Cursor Business and ChatGPT Team.
-
-        Compared to similar engineering teams,
-        your cost per seat appears higher than
-        average.
-
-        The largest opportunities come from
-        removing underutilized licenses and
-        consolidating overlapping workflows.
-
+        <span className="font-medium text-white"> $1,420/month </span>
+        across AI tooling. Most of your spend is concentrated in Cursor Business
+        and ChatGPT Team. Compared to similar engineering teams, your cost per
+        seat appears higher than average. The largest opportunities come from
+        removing underutilized licenses and consolidating overlapping workflows.
         Estimated savings:
-        <span className="font-medium text-green-400">
-          {" "} $640/month{" "}
-        </span>
+        <span className="font-medium text-green-400"> $640/month </span>
         ($7,680/year).
       </p>
     </div>
@@ -422,34 +340,27 @@ function ToolBreakdown() {
       spend: 400,
       savings: 120,
       action: "Reduce seats from 10 → 7",
-      reason:
-        "3 seats appear underutilized compared with team size.",
+      reason: "3 seats appear underutilized compared with team size.",
     },
     {
       tool: "ChatGPT Team",
       spend: 375,
       savings: 240,
-      action:
-        "Consolidate research workflows",
-      reason:
-        "Significant overlap detected with Claude usage.",
+      action: "Consolidate research workflows",
+      reason: "Significant overlap detected with Claude usage.",
     },
     {
       tool: "Claude Team",
       spend: 180,
       savings: 280,
-      action:
-        "Downgrade unused seats",
-      reason:
-        "Multiple seats show low estimated utilization.",
+      action: "Downgrade unused seats",
+      reason: "Multiple seats show low estimated utilization.",
     },
   ];
 
   return (
     <div className="mt-8">
-      <h2 className="text-2xl font-bold text-white">
-        Tool Breakdown
-      </h2>
+      <h2 className="text-2xl font-bold text-white">Tool Breakdown</h2>
 
       <div className="mt-6 space-y-5">
         {tools.map((tool) => (
@@ -469,8 +380,7 @@ function ToolBreakdown() {
                 </h3>
 
                 <p className="mt-1 text-zinc-500">
-                  Current Spend:
-                  ${tool.spend}/month
+                  Current Spend: ${tool.spend}/month
                 </p>
               </div>
 
@@ -479,9 +389,7 @@ function ToolBreakdown() {
                   ${tool.savings}
                 </p>
 
-                <p className="text-sm text-zinc-500">
-                  Monthly Savings
-                </p>
+                <p className="text-sm text-zinc-500">Monthly Savings</p>
               </div>
             </div>
 
@@ -490,14 +398,10 @@ function ToolBreakdown() {
                 Recommended Action
               </p>
 
-              <p className="mt-2 text-white">
-                {tool.action}
-              </p>
+              <p className="mt-2 text-white">{tool.action}</p>
             </div>
 
-            <p className="mt-4 text-zinc-400">
-              {tool.reason}
-            </p>
+            <p className="mt-4 text-zinc-400">{tool.reason}</p>
           </div>
         ))}
       </div>
@@ -508,18 +412,15 @@ function ToolBreakdown() {
 function Recommendations() {
   const recommendations = [
     {
-      title:
-        "Remove unused Cursor licenses",
+      title: "Remove unused Cursor licenses",
       savings: 120,
     },
     {
-      title:
-        "Consolidate research workflows",
+      title: "Consolidate research workflows",
       savings: 240,
     },
     {
-      title:
-        "Downgrade inactive Claude seats",
+      title: "Downgrade inactive Claude seats",
       savings: 280,
     },
   ];
@@ -534,133 +435,144 @@ function Recommendations() {
         p-8
       "
     >
-      <h2 className="text-xl font-semibold text-white">
-        Top Opportunities
-      </h2>
+      <h2 className="text-xl font-semibold text-white">Top Opportunities</h2>
 
       <div className="mt-6 space-y-4">
-        {recommendations.map(
-          (item, index) => (
-            <div
-              key={item.title}
-              className="
+        {recommendations.map((item, index) => (
+          <div
+            key={item.title}
+            className="
                 flex items-center justify-between
                 rounded-2xl
                 border border-zinc-800
                 p-5
               "
-            >
-              <div>
-                <div className="text-zinc-500">
-                  #{index + 1}
-                </div>
+          >
+            <div>
+              <div className="text-zinc-500">#{index + 1}</div>
 
-                <div className="mt-1 text-white">
-                  {item.title}
-                </div>
-              </div>
-
-              <div className="text-right">
-                <div className="text-xl font-bold text-green-400">
-                  ${item.savings}
-                </div>
-
-                <div className="text-xs text-zinc-500">
-                  per month
-                </div>
-              </div>
+              <div className="mt-1 text-white">{item.title}</div>
             </div>
-          ),
-        )}
+
+            <div className="text-right">
+              <div className="text-xl font-bold text-green-400">
+                ${item.savings}
+              </div>
+
+              <div className="text-xs text-zinc-500">per month</div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
 function BenchmarkCard() {
-  const yourCostPerSeat = 57;
-  const industryAverage = 43;
+  const chartData = [
+    {
+      label: "Your Team",
+      value: 72,
+      color: "bg-blue-500",
+    },
+    {
+      label: "Industry Avg",
+      value: 43,
+      color: "bg-zinc-600",
+    },
+  ];
+
+  const maxDataValue = Math.max(...chartData.map((d) => d.value));
+
+  const maxValue = Math.ceil(maxDataValue / 10) * 10;
+
+  const yAxisValues = Array.from({ length: 5 }, (_, i) => (maxValue / 4) * i);
+
+    const difference = Math.round(
+    ((chartData[0].value - chartData[1].value) /
+      chartData[1].value) *
+      100
+  );
 
   return (
-    <div
-      className="
-        mt-8
-        rounded-3xl
-        border border-zinc-800
-        bg-zinc-950
-        p-8
-      "
-    >
-      <h2 className="text-xl font-semibold text-white">
-        Industry Benchmark
-      </h2>
+    <div className="mt-8 rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
+      <h2 className="text-xl font-semibold text-white">Industry Benchmark</h2>
 
       <p className="mt-2 text-zinc-400">
-        Compare your AI spending against
-        similar engineering teams.
+        Compare your AI spend against similar engineering teams.
       </p>
-
-      <div className="mt-8 space-y-6">
-
-        <div>
-          <div className="mb-2 flex justify-between">
-            <span className="text-zinc-300">
-              Your Team
-            </span>
-
-            <span className="text-white font-medium">
-              ${yourCostPerSeat}/seat
-            </span>
-          </div>
-
-          <div className="h-3 rounded-full bg-zinc-800">
-            <div
-              className="h-3 rounded-full bg-red-500"
-              style={{
-                width: "100%",
-              }}
-            />
-          </div>
+      <div className="flex gap-6 mt-6 ">
+        {/* Y Axis */}
+        <div className="relative h-64 w-10">
+          {yAxisValues
+            .slice()
+            .reverse()
+            .map((value) => (
+              <div
+                key={value}
+                className="absolute left-0 text-xs text-zinc-500"
+                style={{
+                  bottom: `${(value / maxValue) * 100}%`,
+                  transform: "translateY(50%)",
+                }}
+              >
+                ${value}
+              </div>
+            ))}
         </div>
 
-        <div>
-          <div className="mb-2 flex justify-between">
-            <span className="text-zinc-300">
-              Industry Average
-            </span>
-
-            <span className="text-white font-medium">
-              ${industryAverage}/seat
-            </span>
-          </div>
-
-          <div className="h-3 rounded-full bg-zinc-800">
+        {/* Chart Area */}
+        <div className="relative flex-1">
+          {/* Grid Lines */}
+          {yAxisValues.map((value) => (
             <div
-              className="h-3 rounded-full bg-zinc-500"
+              key={value}
+              className="absolute left-0 right-0 border-t border-zinc-800"
               style={{
-                width: `${
-                  (industryAverage /
-                    yourCostPerSeat) *
-                  100
-                }%`,
+                bottom: `${(value / maxValue) * 100}%`,
               }}
             />
+          ))}
+
+          {/* Bars */}
+          <div className="relative z-10 flex h-64 items-end ml-8 gap-20">
+            {chartData.map((item , id) => (
+              <div key={id} className="relative z-10 flex flex-col items-center">
+                <div className="mb-3 text-sm font-medium text-white">
+                  ${item.value}
+                </div>
+
+                <div
+                  className={`w-20 rounded-t-xl ${item.color} transition-all duration-700`}
+                  style={{
+                    height: `${(item.value / maxValue) * 180}px`,
+                  }}
+                />
+
+                <div className="mt-3 text-sm text-zinc-300">{item.label}</div>
+              </div>
+            ))}
           </div>
         </div>
-
       </div>
+            {/* Insight */}
+      <div className="mt-8 rounded-2xl border border-blue-500/20 bg-blue-500/5 p-4">
+        <div className="flex items-center gap-2">
+          <div className="rounded-full bg-blue-500/20 px-2 py-1 text-xs font-medium text-blue-400">
+            +{difference}%
+          </div>
 
-      <div className="mt-6 rounded-2xl border border-red-500/10 bg-red-500/3 p-4">
-        <p className="text-zinc-300">
-          Your current AI spend per seat is
-          approximately
-          <span className="font-medium text-white">
-            {" "}33% higher{" "}
-          </span>
-          than comparable teams.
-        </p>
+          <p className="text-zinc-300">
+            Your AI spend per seat is
+            <span className="font-semibold text-white">
+              {" "}
+              {difference}% higher
+            </span>{" "}
+            than comparable teams.
+          </p>
+        </div>
       </div>
     </div>
   );
 }
-export default page
+export default page;
