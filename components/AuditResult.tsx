@@ -6,11 +6,61 @@ import {
   TrendingDown,
   Sparkles,
 } from "lucide-react";
+import { AuditResult } from "@/auditEngine/auditEngineV1";
 
-export default function AuditResults() {
-  const totalMonthlySavings = 640;
-  const totalAnnualSavings = totalMonthlySavings * 12;
-  const efficiencyScore = 74;
+
+
+// export interface AuditResult {
+//   monthlySavings: number;
+//   annualSavings: number;
+//   score:number;
+//   industryAvg:number;
+
+//   spendPerEmployee: number;
+
+
+//   benchmarkStatus:
+//     | "under"
+//     | "within"
+//     | "over";
+
+//   status:
+//     | "credex_opportunity"
+//     | "optimization_found"
+//     | "already_optimized";
+
+//   recommendations: Recommendation[];
+// }
+
+// export interface Recommendation {
+//   tool: string;
+
+//   currentSpend: number;
+
+//   recommendationType:
+//     | "downgrade"
+//     | "alternative"
+//     | "api_replacement"
+//     | "keep";
+
+//   currentPlan: string;
+
+//   recommendedPlan?: string;
+
+//   recommendedTool?: string;
+
+//   savings: number;
+
+//   reason: string;
+// }
+
+
+
+
+export default function AuditResults({ result }: {result:AuditResult}) {
+  const totalMonthlySavings = result.monthlySavings;
+  const totalAnnualSavings = result.annualSavings;
+  const efficiencyScore = result.score;
 
   const toolBreakdown = [
     {
@@ -102,7 +152,7 @@ export default function AuditResults() {
               </div>
 
               <div className="mt-2 text-3xl font-bold text-white">
-                ${totalAnnualSavings.toLocaleString()}
+                ${totalAnnualSavings}
               </div>
             </div>
 
@@ -161,7 +211,7 @@ export default function AuditResults() {
             ${totalMonthlySavings}/month
           </span>
           {" "}(
-          ${totalAnnualSavings.toLocaleString()}/year).
+          ${totalAnnualSavings}/year).
         </p>
       </div>
 
@@ -214,7 +264,7 @@ export default function AuditResults() {
             </div>
 
             <div className="mt-2 text-2xl font-bold text-green-400">
-              ${totalAnnualSavings.toLocaleString()}
+              ${totalAnnualSavings}
             </div>
           </div>
 
