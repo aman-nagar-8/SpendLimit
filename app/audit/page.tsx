@@ -8,34 +8,88 @@ import { motion } from "framer-motion";
 import { AuditLoading } from "@/components/AuditLoading";
 import AuditResults from "@/components/AuditResult";
 import { TrackButton } from "@/components/TrackButton";
+import { ToolInput } from "@/auditEngine/auditEngineV1";
+import { AuditResult } from "@/auditEngine/auditEngineV1";
 
 type AuditState = "form" | "analyzing" | "results";
 
 const page = () => {
-  const [selectedTool, setSelectedTool] = useState("");
-  const [selectedPlan, setSelectedPlan] = useState("");
+  const [selectedTool, setSelectedTool] = useState<ToolInput[]>([]);
   const [primaryUseCase, setPrimaryUseCase] = useState("");
-  const [formInfo, setFormInfo] = useState({
-    monthlySpending: "",
-    numberOfSeats: "",
-    teamSize: "",
-  });
+  const [teamSize, setTeamSize] = useState<number>(0);
+  const [result, setResult] = useState<AuditResult>()
+
+  function updateTool(value: string) {
+    const updatedTools = selectedTool.length
+      ? selectedTool.map((tool, index) =>
+          index === selectedTool.length - 1 ? { ...tool, tool: value } : tool,
+        )
+      : [{ tool: value } as ToolInput];
+    setSelectedTool(updatedTools);
+  }
+
+  function updatePlan(value: string) {
+    const updatedTools = selectedTool.length
+      ? selectedTool.map((tool, index) =>
+          index === selectedTool.length - 1 ? { ...tool, plan: value } : tool,
+        )
+      : [{ plan: value } as ToolInput];
+    setSelectedTool(updatedTools);
+  }
+
+  function updateMonthlySpending(value: number) {
+    const updatedTools = selectedTool.length
+      ? selectedTool.map((tool, index) =>
+          index === selectedTool.length - 1 ? { ...tool, monthlySpend: value } : tool,
+        )
+      : [{ monthlySpend: value } as ToolInput];
+    setSelectedTool(updatedTools);
+  }
+    function updateSeat(value: number) {
+    const updatedTools = selectedTool.length
+      ? selectedTool.map((tool, index) =>
+          index === selectedTool.length - 1 ? { ...tool, seats: value } : tool,
+        )
+      : [{ seats: value } as ToolInput];
+    setSelectedTool(updatedTools);
+  }
 
   const [auditState, setAuditState] = useState<AuditState>("form");
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  function handleSubmit() {
+   async function handleSubmit() {
+    
+  
     // print all the form info in console
-    console.log("Selected Tool: ", selectedTool);
-    console.log("Selected Plan: ", selectedPlan);
-    console.log("Primary Use Case: ", primaryUseCase);
-    console.log("Monthly Spending: ", formInfo.monthlySpending);
-    console.log("Number of Seats: ", formInfo.numberOfSeats);
-    console.log("Team Size: ", formInfo.teamSize);
+    // console.log("Selected Tool: ", selectedTool);
+    // console.log("Selected Plan: ", selectedPlan);
+    // console.log("Primary Use Case: ", primaryUseCase);
+    // console.log("Monthly Spending: ", formInfo.monthlySpending);
+    // console.log("Number of Seats: ", formInfo.numberOfSeats);
+    // console.log("Team Size: ", formInfo.teamSize);
     setIsSubmitted(true);
+
     setAuditState("analyzing");
-  }
+    try {
+    const response = await fetch("api/audit" ,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({tools:selectedTool , useCase:primaryUseCase ,teamSize:teamSize}),
+  });
+    if (!response.ok) {
+      throw new Error(`Failed to create user. Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    setResult(data.result);
+    console.log('Success:', data);
+    } catch (error) {
+      console.error('Error posting data:', error);
+    }
+}
 
   function stopTracking() {
     setIsSubmitted(true);
@@ -79,8 +133,8 @@ const page = () => {
                     </label>
 
                     <CustomSelect
-                      value={selectedTool}
-                      onChange={setSelectedTool}
+                      value={selectedTool[0]?.tool}
+                      onChange={updateTool}
                       placeholder="Select AI Tool"
                       options={AI_TOOLS.map((tool) => ({
                         label: tool.name,
@@ -96,12 +150,12 @@ const page = () => {
                     </label>
 
                     <CustomSelect
-                      value={selectedPlan}
-                      onChange={setSelectedPlan}
+                      value={selectedTool[0]?.plan || ""}
+                      onChange={updatePlan}
                       placeholder="Select Plan"
                       options={
                         AI_TOOLS.find(
-                          (tool) => tool.id === selectedTool,
+                          (tool) => tool.id === selectedTool[0]?.tool,
                         )?.plans.map((plan) => ({
                           label: plan,
                           value: plan,
@@ -146,12 +200,9 @@ const page = () => {
                       <input
                         type="number"
                         placeholder="0"
-                        value={formInfo.monthlySpending}
+                        value={selectedTool[0]?.monthlySpend | 0 }
                         onChange={(e) =>
-                          setFormInfo({
-                            ...formInfo,
-                            monthlySpending: e.target.value,
-                          })
+                           updateMonthlySpending(Number(e.target.value))
                         }
                         className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/80 py-4 pl-8 pr-4 text-white outline-none transition-all duration-300 focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10"
                       />
@@ -177,12 +228,9 @@ const page = () => {
                     <input
                       type="number"
                       placeholder="10"
-                      value={formInfo.numberOfSeats}
+                      value={selectedTool[0]?.seats | 0}
                       onChange={(e) =>
-                        setFormInfo({
-                          ...formInfo,
-                          numberOfSeats: e.target.value,
-                        })
+                        updateSeat(Number(e.target.value))
                       }
                       className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/80 px-4 py-4 text-white outline-none transition-all duration-300 focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10"
                     />
@@ -197,12 +245,9 @@ const page = () => {
                     <input
                       type="number"
                       placeholder="25"
-                      value={formInfo.teamSize}
+                      value={teamSize}
                       onChange={(e) =>
-                        setFormInfo({
-                          ...formInfo,
-                          teamSize: e.target.value,
-                        })
+                        setTeamSize(Number(e.target.value))
                       }
                       className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/80 px-4 py-4 text-white outline-none transition-all duration-300 focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10"
                     />
@@ -214,14 +259,15 @@ const page = () => {
                   <div className="text-sm text-zinc-400">Current Selection</div>
 
                   <div className="mt-2 text-white font-medium">
-                    {selectedTool
-                      ? AI_TOOLS.find((t) => t.id === selectedTool)?.name
+                    {selectedTool[0]?.tool
+                      ? AI_TOOLS.find((t) => t.id === selectedTool[0]?.tool)
+                          ?.name
                       : "No tool selected"}
                   </div>
 
                   <div className="mt-1 text-zinc-400">
-                    {selectedPlan || "No plan"} • {formInfo.numberOfSeats || 0}{" "}
-                    seats • ${formInfo.monthlySpending || 0}/month
+                    {selectedTool[0]?.plan || "No plan"} • {selectedTool[0]?.seats || 0}{" "}
+                    seats • ${selectedTool[0]?.monthlySpend || 0}/month
                   </div>
                 </div>
 
@@ -259,14 +305,15 @@ const page = () => {
                   <div className="text-sm text-zinc-400">Current Selection</div>
 
                   <div className="mt-2 text-white font-medium">
-                    {selectedTool
-                      ? AI_TOOLS.find((t) => t.id === selectedTool)?.name
+                    {selectedTool[0]?.tool
+                      ? AI_TOOLS.find((t) => t.id === selectedTool[0]?.tool)
+                          ?.name
                       : "No tool selected"}
                   </div>
 
                   <div className="mt-1 text-zinc-400">
-                    {selectedPlan || "No plan"} • {formInfo.numberOfSeats || 0}{" "}
-                    seats • ${formInfo.monthlySpending || 0}/month
+                    {selectedTool[0]?.plan || "No plan"} • {selectedTool[0]?.seats || 0}{" "}
+                    seats • ${selectedTool[0]?.monthlySpend || 0}/month
                   </div>
                 </motion.div>
                 {auditState === "analyzing" && (
@@ -276,17 +323,15 @@ const page = () => {
                     <TrackButton fn={stopTracking} text={"Stop Tracking"} />
                   </>
                 )}
-                {auditState === "results" && <AuditResults />}
+                {auditState === "results" && result && <AuditResults result={result} />}
               </div>
             )}
           </div>
         </div>
       </main>
-      <footer className="h-100" ></footer>
+      <footer className="h-100"></footer>
     </div>
   );
 };
-
-
 
 export default page;

@@ -8,4 +8,6 @@ export async function POST(req: NextRequest) {
     await req.json();
 
     const auditResult:AuditResult = runAudit({teamSize , useCase , tools , capabilityRatings , pricingData:PRICING_DATA , useCaseBenchmarks});
+    console.log("req come and audit Result : " , auditResult);
+    return NextResponse.json({mess:"audit success" , result:auditResult});
 }

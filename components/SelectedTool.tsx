@@ -1,5 +1,6 @@
 import { ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
+import { ToolInput } from "@/auditEngine/auditEngineV1";
 
 type Option = {
   label: string;
@@ -8,7 +9,7 @@ type Option = {
 
 type CustomSelectProps = {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: string ) => void;
   options: Option[];
   placeholder: string;
 };
@@ -21,9 +22,7 @@ export function CustomSelect({
 }: CustomSelectProps) {
   const [open, setOpen] = useState(false);
 
-  const selectedOption = options.find(
-    (option) => option.value === value,
-  );
+  const selectedOption = options.find((option) => option.value === value);
 
   return (
     <div className="relative w-full">
@@ -38,19 +37,13 @@ export function CustomSelect({
           hover:border-red-500/30
         "
       >
-        <span
-          className={
-            selectedOption ? "text-white" : "text-zinc-500"
-          }
-        >
+        <span className={selectedOption ? "text-white" : "text-zinc-500"}>
           {selectedOption?.label || placeholder}
         </span>
 
         <ChevronDown
           size={18}
-          className={`transition duration-300 ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`transition duration-300 ${open ? "rotate-180" : ""}`}
         />
       </button>
 
@@ -68,9 +61,8 @@ export function CustomSelect({
             <button
               key={option.value}
               type="button"
-              onClick={() => {
-                onChange(option.value);
-                setOpen(false);
+              onClick={()=>{onChange(option.value)
+                setOpen(false)
               }}
               className="
                 flex w-full items-center justify-between
@@ -84,10 +76,7 @@ export function CustomSelect({
               {option.label}
 
               {value === option.value && (
-                <Check
-                  size={16}
-                  className="text-red-500"
-                />
+                <Check size={16} className="text-red-500" />
               )}
             </button>
           ))}
